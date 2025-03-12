@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cron = require("node-cron");
 const { Resend } = require("resend");
 const mongoose = require("mongoose");
+const emailTemplates = require("./templates/emailTemplates");
 
 // Load environment variables
 dotenv.config();
@@ -36,51 +37,69 @@ app.post("/api/test/send-email", async (req, res) => {
   try {
     const Recipients = require("./models/recipient");
     const EmailLog = require("./models/emailLog");
+    const { style = 'elonMusk', type = 'weeklyCheck', recipient } = req.body;
 
-    const recipients = await Recipients.find({ active: true });
+    // Validate template style and type
+    if (!emailTemplates[style]) {
+      return res.status(400).json({ message: 'Invalid template style' });
+    }
+    if (!emailTemplates[style].templates[type]) {
+      return res.status(400).json({ message: 'Invalid template type' });
+    }
 
+    const template = emailTemplates[style].templates[type];
     const results = [];
-    for (const recipient of recipients) {
-      try {
-        const emailResult = await resend.emails.send({
-          from: "Elon Musk <elon_musk@umangcodes.tech>",
-          to: recipient.email,
-          subject: "Weekly Progress Check (Test)",
-          html: `
-            <h2>Hey there! 👋</h2>
-            <p>This is a test email from Elon Bot.</p>
-            <p>What did you get done this week?</p>
-            
-          `,
-        });
 
-        // Log successful email
-        const log = await EmailLog.create({
-          recipient: recipient._id,
-          status: "sent",
-          sentAt: new Date(),
+    try {
+      if (recipient) {
+        // Single test email
+        console.log('Attempting to send test email to:', recipient.email);
+        const emailResult = await resend.emails.send({
+          from: emailTemplates[style].from,
+          to: recipient.email,
+          subject: template.subject,
+          html: template.html(recipient.name),
         });
+        console.log('Test email sent successfully:', emailResult);
 
         results.push({
           recipient: recipient.email,
           status: "success",
           emailId: emailResult.id,
         });
-      } catch (error) {
-        // Log failed email
-        await EmailLog.create({
-          recipient: recipient._id,
-          status: "failed",
-          error: error.message,
-          sentAt: new Date(),
-        });
+      } else {
+        // Send to all active recipients
+        const recipients = await Recipients.find({ active: true });
+        for (const recipient of recipients) {
+          const emailResult = await resend.emails.send({
+            from: emailTemplates[style].from,
+            to: recipient.email,
+            subject: template.subject,
+            html: template.html(recipient.name),
+          });
 
-        results.push({
-          recipient: recipient.email,
-          status: "failed",
-          error: error.message,
-        });
+          // Log successful email
+          const log = await EmailLog.create({
+            recipient: recipient._id,
+            status: "sent",
+            sentAt: new Date(),
+            template: { style, type }
+          });
+
+          results.push({
+            recipient: recipient.email,
+            status: "success",
+            emailId: emailResult.id,
+          });
+        }
       }
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      results.push({
+        recipient: recipient?.email || 'unknown',
+        status: "failed",
+        error: error.message,
+      });
     }
 
     res.json({
@@ -102,18 +121,15 @@ cron.schedule(
       const EmailLog = require("./models/emailLog");
 
       const recipients = await Recipients.find({ active: true });
+      const template = emailTemplates.elonMusk.templates.weeklyCheck;
 
       for (const recipient of recipients) {
         try {
           await resend.emails.send({
-            from: "Elon Musk <elon_musk@umangcodes.tech>",
+            from: emailTemplates.elonMusk.from,
             to: recipient.email,
-            subject: "Weekly Progress Check",
-            html: `
-            <h2>Hey there! 👋</h2>
-            <p>What did you get done this week?</p>
-           
-          `,
+            subject: template.subject,
+            html: template.html(recipient.name),
           });
 
           // Log successful email
@@ -121,6 +137,7 @@ cron.schedule(
             recipient: recipient._id,
             status: "sent",
             sentAt: new Date(),
+            template: { style: 'elonMusk', type: 'weeklyCheck' }
           });
         } catch (error) {
           // Log failed email
@@ -129,6 +146,7 @@ cron.schedule(
             status: "failed",
             error: error.message,
             sentAt: new Date(),
+            template: { style: 'elonMusk', type: 'weeklyCheck' }
           });
         }
       }

@@ -1,236 +1,155 @@
-# Elon Musk Bot
+# Donezo
 
-A web application that sends weekly "What did you get done this week?" emails to recipients, inspired by Elon Musk's management style.
+A modern web application that sends personalized weekly review emails in the style of tech visionaries like Elon Musk and Steve Jobs. Built with Next.js, Express, and MongoDB.
 
-## 🚀 Features
+![App Screenshot](public/mail.png)
 
-- **Automated Weekly Emails**: Sends emails every Monday at 9 AM UTC
-- **Recipient Management**: Add, edit, and remove email recipients
-- **Email Tracking**: Logs all sent emails with status and timestamps
-- **Test Functionality**: Manually trigger emails for testing
+## ✨ Features
+
+- **Stylized Email Templates**
+  - Elon Musk style - Direct and results-focused
+  - Steve Jobs style - Visionary and product-focused
+  - Weekly check-ins and reminders
+
+- **Modern Web Interface**
+  - Clean, dark-themed UI with glassmorphism effects
+  - Mobile-responsive design
+  - Real-time feedback with toast notifications
+
+- **Email Management**
+  - Send instant test emails
+  - Automated weekly emails (every Monday at 9 AM UTC)
+  - Email delivery tracking and logging
 
 ## 🛠️ Tech Stack
 
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type safety and better developer experience
+- **Tailwind CSS** - Utility-first styling
+- **Lucide Icons** - Beautiful, consistent icons
+- **React Hot Toast** - Elegant notifications
+
 ### Backend
+- **Express.js** - Web framework
+- **MongoDB** - Database
+- **Resend** - Modern email delivery
+- **Node-cron** - Email scheduling
 
-- **Node.js** with **Express.js**
-- **MongoDB** for data storage
-- **Resend API** for email delivery
-- **node-cron** for scheduling
+## 🚀 Getting Started
 
-### Frontend (To Be Implemented)
+### Prerequisites
+- Node.js 14 or higher
+- MongoDB
+- [Resend](https://resend.com) API key
 
-- Requirements for frontend developers are detailed below
+### Installation
 
-## 📋 API Documentation
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd weekly-review-email
+```
 
-### Recipients Management
+2. Install backend dependencies
+```bash
+cd server
+npm install
+```
 
-#### Get All Recipients
+3. Configure backend environment
+Create a `.env` file in the server directory:
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_uri
+RESEND_API_KEY=your_resend_api_key
+```
 
-- **URL**: `/api/recipients`
-- **Method**: `GET`
-- **Response**: Array of recipient objects
+4. Install frontend dependencies
+```bash
+cd ../frontend
+npm install
+```
 
+5. Configure frontend environment
+Create a `.env.local` file in the frontend directory:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+### Running the Application
+
+1. Start the backend server
+```bash
+cd server
+npm run dev
+```
+
+2. Start the frontend development server
+```bash
+cd frontend
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`
+
+## 📧 Email Templates
+
+### Weekly Check Template
+- Subject: "Weekly Review: What did you accomplish?"
+- Customized greeting with recipient's name
+- Available in both Elon Musk and Steve Jobs styles
+
+### Reminder Template
+- Subject: "Quick Check-in"
+- More casual tone for follow-ups
+- Available in both leadership styles
+
+## 🔍 API Endpoints
+
+### Test Email
+- `POST /api/test/send-email`
 ```json
-[
-  {
-    "_id": "67ceea1b360f7a5e376e0ff8",
-    "email": "example@example.com",
-    "name": "Example User",
-    "active": true,
-    "createdAt": "2025-03-10T13:33:15.017Z"
+{
+  "style": "elonMusk",
+  "type": "weeklyCheck",
+  "recipient": {
+    "email": "user@example.com",
+    "name": "User Name"
   }
-]
-```
-
-#### Add New Recipient
-
-- **URL**: `/api/recipients`
-- **Method**: `POST`
-- **Body**:
-
-```json
-{
-  "email": "example@example.com",
-  "name": "Example User",
-  "active": true
-}
-```
-
-- **Response**: The created recipient object
-
-#### Update Recipient
-
-- **URL**: `/api/recipients/:id`
-- **Method**: `PATCH`
-- **Body**: Any fields to update
-
-```json
-{
-  "name": "Updated Name",
-  "active": false
-}
-```
-
-- **Response**: The updated recipient object
-
-#### Delete Recipient
-
-- **URL**: `/api/recipients/:id`
-- **Method**: `DELETE`
-- **Response**:
-
-```json
-{
-  "message": "Recipient deleted"
 }
 ```
 
 ### Email Logs
+- `GET /api/logs` - Get all email logs
+- `GET /api/logs/recipient/:recipientId` - Get logs for specific recipient
 
-#### Get All Email Logs
+## 📱 Frontend Pages
 
-- **URL**: `/api/logs`
-- **Method**: `GET`
-- **Response**: Array of email log objects
+### Landing Page
+- Modern, animated hero section
+- Quick access to email testing
+- Social links and project information
 
-```json
-[
-  {
-    "_id": "67ceeb2454277ff95d71f210",
-    "recipient": {
-      "_id": "67ceeb2054277ff95d71f208",
-      "email": "example@example.com",
-      "name": "Example User"
-    },
-    "status": "sent",
-    "sentAt": "2025-03-10T13:37:40.199Z"
-  }
-]
-```
+### Email Testing Interface
+- Email template selection
+- Recipient information input
+- Instant feedback on email status
 
-#### Get Logs for Specific Recipient
+## 🤝 Contributing
 
-- **URL**: `/api/logs/recipient/:recipientId`
-- **Method**: `GET`
-- **Response**: Array of email logs for the specified recipient
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Test Endpoint
+## 📄 License
 
-#### Send Test Email
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- **URL**: `/api/test/send-email`
-- **Method**: `POST`
-- **Response**: Results of the email sending operation
+## 🙏 Acknowledgments
 
-```json
-{
-  "message": "Test emails processed",
-  "results": [
-    {
-      "recipient": "example@example.com",
-      "status": "success",
-      "emailId": "c319637d-d762-4d71-810c-10980267c06d"
-    }
-  ]
-}
-```
-
-## 📊 Data Models
-
-### Recipient
-
-```javascript
-{
-  email: String,       // Required, unique
-  name: String,        // Optional
-  active: Boolean,     // Default: true
-  createdAt: Date,     // Default: current date
-  lastEmailedAt: Date  // Optional
-}
-```
-
-### EmailLog
-
-```javascript
-{
-  recipient: ObjectId, // Reference to Recipient
-  status: String,      // "sent" or "failed"
-  error: String,       // Only present if status is "failed"
-  sentAt: Date         // When the email was sent
-}
-```
-
-## 🔧 Setup Instructions
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB
-- Resend API key
-
-### Backend Setup
-
-1. Clone the repository
-
-   ```bash
-   git clone https://github.com/yourusername/elon-musk-bot.git
-   cd elon-musk-bot
-   ```
-
-2. Install dependencies
-
-   ```bash
-   cd server
-   npm install
-   ```
-
-3. Create a `.env` file in the server directory
-
-   ```
-   PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
-   RESEND_API_KEY=your_resend_api_key
-   ```
-
-4. **Example `.env` file**:
-
-   ```
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/your_database_name
-   RESEND_API_KEY=your_resend_api_key
-   ```
-
-5. Start the server
-   ```bash
-   npm run dev
-   ```
-
-## 🎨 Frontend Requirements
-
-We're looking for a frontend developer to implement:
-
-1. **Recipient Management Interface**:
-
-   - Form to add new recipients
-   - Table to display existing recipients
-   - Edit and delete functionality
-   - Toggle for active/inactive status
-
-2. **Email Logs Dashboard**:
-
-   - Display of all email logs
-   - Filtering by status (sent/failed)
-   - Sorting by date
-   - Search functionality
-
-3. **Test Email Interface**:
-
-   - Button to trigger test emails
-   - Feedback on email sending status
-
-4. **Design Requirements**:
-   - Clean, modern UI
-   - Mobile-responsive design
-   - Intuitive user experience
+- Inspired by leadership styles of tech visionaries
+- Built with modern web technologies
+- Designed for simplicity and effectiveness
