@@ -2,7 +2,7 @@
 
 A modern web application that sends personalized weekly review emails in the style of tech visionaries like Elon Musk and Steve Jobs.
 
-## ✨ Features
+## ✨ Features 
 
 - **Stylized Email Templates**
   - Elon Musk style - Direct and results-focused
