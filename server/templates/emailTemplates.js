@@ -1,13 +1,15 @@
 const templates = {
   elonMusk: {
-    name: 'Elon Musk',
-    from: 'Elon Bot <onboarding@resend.dev>',
+    name: "Elon Musk",
+    from: "Elon Bot <elon_musk@umangcodes.tech>",
     templates: {
       weeklyCheck: {
-        subject: 'Weekly Progress Check',
+        subject: "Weekly Progress Check",
         html: (recipientName) => `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2D3748; margin-bottom: 24px;">Hey${recipientName ? ' ' + recipientName : ''}! 🚀</h2>
+            <h2 style="color: #2D3748; margin-bottom: 24px;">Hey${
+              recipientName ? " " + recipientName : ""
+            }! 🚀</h2>
             <p style="color: #4A5568; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">
               Time for our weekly sync. Let's be efficient:
             </p>
@@ -23,13 +25,15 @@ const templates = {
               <p style="color: #718096; font-size: 14px; margin: 4px 0 0;">CEO, Tesla & SpaceX</p>
             </div>
           </div>
-        `
+        `,
       },
       reminder: {
-        subject: 'Quick Reminder: Weekly Update',
+        subject: "Quick Reminder: Weekly Update",
         html: (recipientName) => `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2D3748; margin-bottom: 24px;">Hey${recipientName ? ' ' + recipientName : ''} ⚡</h2>
+            <h2 style="color: #2D3748; margin-bottom: 24px;">Hey${
+              recipientName ? " " + recipientName : ""
+            } ⚡</h2>
             <p style="color: #4A5568; font-size: 16px; line-height: 1.5;">
               Haven't heard from you yet. Need that update to optimize our feedback loop.
             </p>
@@ -42,19 +46,21 @@ const templates = {
               <p style="color: #718096; font-size: 14px; margin: 4px 0 0;">CEO, Tesla & SpaceX</p>
             </div>
           </div>
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   steveJobs: {
-    name: 'Steve Jobs',
-    from: 'Steve Bot <onboarding@resend.dev>',
+    name: "Steve Jobs",
+    from: "Steve Bot <elon_musk@umangcodes.tech>",
     templates: {
       weeklyCheck: {
-        subject: 'This Week\'s Progress',
+        subject: "This Week's Progress",
         html: (recipientName) => `
           <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #1D1D1F; margin-bottom: 24px;">Hello${recipientName ? ' ' + recipientName : ''}</h2>
+            <h2 style="color: #1D1D1F; margin-bottom: 24px;">Hello${
+              recipientName ? " " + recipientName : ""
+            }</h2>
             <p style="color: #1D1D1F; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">
               I hope you're crafting something insanely great this week.
             </p>
@@ -72,13 +78,15 @@ const templates = {
               <p style="color: #86868B; font-size: 14px; margin: 4px 0 0;">Apple Inc.</p>
             </div>
           </div>
-        `
+        `,
       },
       reminder: {
-        subject: 'A Thousand Songs in Your Pocket (and One Missing Update)',
+        subject: "A Thousand Songs in Your Pocket (and One Missing Update)",
         html: (recipientName) => `
           <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #1D1D1F; margin-bottom: 24px;">Hello${recipientName ? ' ' + recipientName : ''}</h2>
+            <h2 style="color: #1D1D1F; margin-bottom: 24px;">Hello${
+              recipientName ? " " + recipientName : ""
+            }</h2>
             <p style="color: #1D1D1F; font-size: 16px; line-height: 1.5;">
               In the time it takes to listen to one song, you can share your weekly progress.
             </p>
@@ -96,10 +104,10 @@ const templates = {
               <p style="color: #86868B; font-size: 14px; margin: 4px 0 0;">Apple Inc.</p>
             </div>
           </div>
-        `
-      }
-    }
-  }
+        `,
+      },
+    },
+  },
 };
 
 module.exports = templates; 

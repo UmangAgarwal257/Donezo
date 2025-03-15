@@ -1,5 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import Link from "next/link";
+import { ArrowLeftIcon } from "lucide-react";
 import React from "react";
 
 interface NavbarProps {
@@ -14,7 +13,11 @@ const Navbar = ({ onBack, showBackButton }: NavbarProps) => {
         {showBackButton && (
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-3 py-1 rounded-md hover:bg-white/5 transition-colors"
+            className="flex items-center gap-2 px-3 py-1 rounded-md"
+            style={{
+              background:
+                "linear-gradient(180deg, #222223 0%, rgba(34, 34, 35, 0.6) 68.75%)",
+            }}
           >
             <ArrowLeftIcon size={16} />
             <span>Back</span>
@@ -22,20 +25,6 @@ const Navbar = ({ onBack, showBackButton }: NavbarProps) => {
         )}
         <span className="font-bold text-2xl">Donezo</span>
       </div>
-      <nav className="hidden top-1/2 left-1/2 absolute sm:flex justify-between items-center gap-6 text-sm -translate-x-1/2 -translate-y-1/2">
-        <Link href="https://x.com/code_kartik">Twitter</Link>
-        <Link href="https://www.kartiklabhshetwar.me/">Contact</Link>
-      </nav>
-      <button
-        className="flex items-center gap-2 px-3 py-1 rounded-md"
-        style={{
-          background:
-            "linear-gradient(180deg, #222223 0%, rgba(34, 34, 35, 0.6) 68.75%)",
-        }}
-      >
-        <span>Developers start here </span>
-        <ArrowRightIcon size={16} />
-      </button>
     </header>
   );
 };

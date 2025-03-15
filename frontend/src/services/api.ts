@@ -39,7 +39,7 @@ export interface EmailResult {
 
 export interface TestEmailResponse {
   message: string;
-  results: EmailResult[];
+  nextEmailDate: string;
 }
 
 export interface SendEmailOptions {
@@ -61,7 +61,10 @@ export const recipientApi = {
 export const emailLogApi = {
   getAll: () => api.get<EmailLog[]>('/logs'),
   getByRecipient: (recipientId: string) => api.get<EmailLog[]>(`/logs/recipient/${recipientId}`),
-  sendTestEmail: (options: SendEmailOptions = {}) => api.post<TestEmailResponse>('/test/send-email', options),
+  sendTestEmail: async (options: SendEmailOptions) => {
+    const response = await axios.post<TestEmailResponse>('/api/test/send-email', options);
+    return response.data;
+  },
 };
 
 export default api; 
