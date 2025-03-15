@@ -12,6 +12,7 @@ import Section from "../components/ui/Section";
 import SectionTitle from "../components/ui/SectionTitle";
 import { Spotlight } from "../components/ui/Spotlight";
 import { AceternityGrid } from "../components/ui/aceternity-grid";
+import { Carousel } from "../components/ui/carousel";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -97,6 +98,24 @@ export default function Home() {
           </div>
         </motion.main>
       </AnimatePresence>
+      
+      {/* Examples Section with Carousel */}
+      <Section className="relative z-10 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <SectionTitle>Experience Our Weekly Reviews</SectionTitle>
+          <p className="text-neutral-400 text-lg mt-4 max-w-2xl mx-auto">
+            Get inspired by communication styles from tech visionaries. Our weekly reviews are crafted to keep you focused and motivated.
+          </p>
+        </motion.div>
+        
+        <Carousel />
+      </Section>
       
       {/* Features Section */}
       <Section className="min-h-screen flex flex-col justify-center items-center relative z-10">

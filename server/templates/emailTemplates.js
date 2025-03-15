@@ -1,7 +1,7 @@
 const templates = {
   elonMusk: {
     name: "Elon Musk",
-    from: "Elon Bot <elon_musk@umangcodes.tech>",
+    from: "Elon Musk <elon_musk@umangcodes.tech>",
     templates: {
       weeklyCheck: {
         subject: "Weekly Progress Check",
@@ -52,7 +52,7 @@ const templates = {
   },
   steveJobs: {
     name: "Steve Jobs",
-    from: "Steve Bot <elon_musk@umangcodes.tech>",
+    from: "Steve Jobs <elon_musk@umangcodes.tech>",
     templates: {
       weeklyCheck: {
         subject: "This Week's Progress",
