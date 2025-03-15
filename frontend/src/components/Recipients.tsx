@@ -72,11 +72,11 @@ const Recipients = ({ onBack }: RecipientsProps) => {
   };
 
   return (
-    <div className="relative flex flex-col gap-12 md:gap-24 w-full min-h-screen bg-[#0a0a0a]">
+    <div className="relative flex flex-col gap-12 md:gap-24 w-full min-h-screen bg-[#0a0a0a] overflow-y-auto">
       <Navbar onBack={onBack} showBackButton={true} />
-      <main className="flex flex-col flex-1 justify-start items-center gap-8 md:gap-16 w-full max-w-4xl mx-auto px-4 pt-4 md:pt-8">
+      <main className="flex flex-col flex-1 justify-start items-center gap-8 md:gap-16 w-full max-w-4xl mx-auto px-4 pt-4 md:pt-8 pb-12">
         <div className="flex flex-col items-center gap-6 md:gap-10 w-full">
-          <h1 className="text-white font-medium text-[32px] md:text-[40px] lg:text-[72px] text-center leading-[1.2] md:leading-[1.3]">
+          <h1 className="bg-clip-text bg-gradient-to-br from-white via-30% via-white to-white/30 font-medium text-[32px] md:text-[40px] lg:text-[72px] text-center leading-[1.2] md:leading-[1.3] text-transparent">
             {isRegistered ? 'Your Journey Begins! 🚀' : 'Start Your Growth Journey'}
           </h1>
 

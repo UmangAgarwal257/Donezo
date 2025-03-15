@@ -23,7 +23,7 @@ const Navbar = ({ onBack, showBackButton }: NavbarProps) => {
             <span>Back</span>
           </button>
         )}
-        <span className="font-bold text-2xl">Donezo</span>
+        <span className="bg-clip-text bg-gradient-to-br from-white via-30% via-white to-white/30 font-bold text-2xl text-center leading-[1.2] md:leading-[1.3] text-transparent">Donezo</span>
       </div>
     </header>
   );

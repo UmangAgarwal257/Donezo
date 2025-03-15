@@ -2,8 +2,6 @@
 
 A modern web application that sends personalized weekly review emails in the style of tech visionaries like Elon Musk and Steve Jobs. Built with Next.js, Express, and MongoDB.
 
-![App Screenshot](public/mail.png)
-
 ## ✨ Features
 
 - **Stylized Email Templates**
