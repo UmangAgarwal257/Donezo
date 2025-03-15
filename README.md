@@ -12,7 +12,7 @@ A modern web application that sends personalized weekly review emails in the sty
 - **Modern Web Interface**
   - Clean, dark-themed UI with glassmorphism effects
   - Mobile-responsive design
-  - Real-time feedback with toast notifications
+  - Real-time feedback with toast notifications 
 
 - **Email Management**
   - Send instant test emails
