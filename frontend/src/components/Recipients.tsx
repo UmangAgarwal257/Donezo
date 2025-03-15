@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Send, Check, Target } from 'lucide-react';
+import { Send, Check, Target, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../app/_components/navbar';
 import { emailLogApi } from '../services/api';
@@ -17,6 +17,7 @@ const Recipients = ({ onBack }: RecipientsProps) => {
   const [userName, setUserName] = useState('');
   const [userTimezone, setUserTimezone] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [nextEmailDate, setNextEmailDate] = useState<string>('');
   const [selectedTemplate, setSelectedTemplate] = useState<{style: 'elonMusk' | 'steveJobs', type: 'weeklyCheck' | 'reminder'}>({
     style: 'elonMusk',
@@ -51,6 +52,7 @@ const Recipients = ({ onBack }: RecipientsProps) => {
       return;
     }
     try {
+      setIsLoading(true);
       const response = await emailLogApi.register({
         style: selectedTemplate.style,
         recipient: {
@@ -69,6 +71,8 @@ const Recipients = ({ onBack }: RecipientsProps) => {
     } catch (err) {
       console.error('Failed to register:', err);
       toast.error('Failed to register. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -135,9 +139,14 @@ const Recipients = ({ onBack }: RecipientsProps) => {
                         </div>
                         <button
                           type="submit"
-                          className="w-full md:w-auto p-3 md:p-2 rounded-lg border border-blue-500/30 bg-blue-500/20 backdrop-blur-sm text-blue-400 hover:bg-blue-500/30 transition-colors md:ml-4"
+                          disabled={isLoading}
+                          className="w-full md:w-auto p-3 md:p-2 rounded-lg border border-blue-500/30 bg-blue-500/20 backdrop-blur-sm text-blue-400 hover:bg-blue-500/30 transition-colors md:ml-4 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <Send size={16} className="mx-auto" />
+                          {isLoading ? (
+                            <Loader2 size={16} className="mx-auto animate-spin" />
+                          ) : (
+                            <Send size={16} className="mx-auto" />
+                          )}
                         </button>
                       </div>
                     </form>
