@@ -83,7 +83,7 @@ export default function Home() {
               whileTap={{ scale: 0.98 }}
               className="mx-auto flex w-full max-w-md items-center justify-center relative z-20 mt-4"
             >
-              <Button onClick={handleGetStarted} withMovingBorder className="bg-[#1a1a1a]" icon="arrow" fullWidth>
+              <Button onClick={handleGetStarted} withmovingborder fullWidth className="bg-[#1a1a1a]">
                 Start Your Journey
               </Button>
             </motion.div>
@@ -155,9 +155,9 @@ export default function Home() {
             <div className="flex justify-center">
               <Button 
                 onClick={handleGetStarted} 
-                withMovingBorder 
-                icon="send"
-                className="bg-[#1a1a1a] w-full text-white"
+                withmovingborder
+                fullWidth
+                className="bg-[#0B1120]"
               >
                 Begin Your Journey
               </Button>
