@@ -1,6 +1,6 @@
 # Donezo
 
-A modern web application that sends personalized weekly review emails in the style of tech visionaries like Elon Musk and Steve Jobs. Built with Next.js, Express, and MongoDB.
+A modern web application that sends personalized weekly review emails in the style of tech visionaries like Elon Musk and Steve Jobs.
 
 ## ✨ Features
 
@@ -9,24 +9,12 @@ A modern web application that sends personalized weekly review emails in the sty
   - Steve Jobs style - Visionary and product-focused
   - Weekly check-ins and reminders
 
-- **Modern Web Interface**
-  - Clean, dark-themed UI with glassmorphism effects
-  - Mobile-responsive design
-  - Real-time feedback with toast notifications 
-
-- **Email Management**
-  - Send instant test emails
-  - Automated weekly emails (every Monday at 9 AM UTC)
-  - Email delivery tracking and logging
-
 ## 🛠️ Tech Stack
 
 ### Frontend
 - **Next.js 14** - React framework with App Router
 - **TypeScript** - Type safety and better developer experience
 - **Tailwind CSS** - Utility-first styling
-- **Lucide Icons** - Beautiful, consistent icons
-- **React Hot Toast** - Elegant notifications
 
 ### Backend
 - **Express.js** - Web framework
