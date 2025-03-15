@@ -5,6 +5,7 @@ const cron = require("node-cron");
 const { Resend } = require("resend");
 const mongoose = require("mongoose");
 const emailTemplates = require("./templates/emailTemplates");
+const moment = require('moment-timezone');
 
 // Load environment variables
 dotenv.config();
@@ -72,79 +73,97 @@ async function sendEmailAndLog(recipient, template, style = 'elonMusk', type = '
 }
 
 // Schedule weekly emails (Every Monday at 9 AM UTC)
-cron.schedule('0 9 * * 1', async () => {
-  console.log('Running weekly email job...');
+cron.schedule('* * * * *', async () => {
   try {
-    const activeRecipients = await Recipient.find({ active: true });
+    const recipients = await Recipient.find({ active: true });
     
-    for (const recipient of activeRecipients) {
-      // Determine if we need to send a reminder
-      const lastEmailDate = recipient.lastEmailedAt;
-      const type = !lastEmailDate || 
-                   (new Date() - lastEmailDate) > 7 * 24 * 60 * 60 * 1000 
-                   ? 'weeklyCheck' 
-                   : 'reminder';
-
-      await sendEmailAndLog(recipient, emailTemplates[recipient.style || 'elonMusk'], recipient.style || 'elonMusk', type);
+    for (const recipient of recipients) {
+      const recipientTime = moment().tz(recipient.timezone);
       
-      // Add delay between emails to prevent rate limiting
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-    console.log('Weekly email job completed');
-  } catch (error) {
-    console.error('Error in weekly email job:', error);
-  }
-});
+      // Check if it's 9 AM in the recipient's timezone and it's Monday
+      if (recipientTime.hours() === 9 && 
+          recipientTime.minutes() === 0 && 
+          recipientTime.day() === 1) {
+        
+        // Check if we haven't sent an email in the last hour to prevent duplicates
+        const lastEmailedAt = recipient.lastEmailedAt ? moment(recipient.lastEmailedAt) : moment(0);
+        if (recipientTime.diff(lastEmailedAt, 'hours') < 1) {
+          continue;
+        }
 
-// Registration endpoint (no immediate email)
-app.post("/api/test/send-email", async (req, res) => {
-  try {
-    const { style = 'elonMusk', recipient } = req.body;
-    
-    if (!recipient || !recipient.email) {
-      return res.status(400).json({ message: "Recipient email is required" });
-    }
-
-    // Create or update recipient
-    let recipientDoc = await Recipient.findOne({ email: recipient.email });
-    if (!recipientDoc) {
-      recipientDoc = await Recipient.create({
-        email: recipient.email,
-        name: recipient.name || '',
-        style: style, // Save the preferred style
-        active: true
-      });
-    } else {
-      // Update existing recipient's style preference
-      recipientDoc.style = style;
-      await recipientDoc.save();
-    }
-
-    // Calculate next Monday at 9 AM UTC
-    const now = new Date();
-    const daysUntilMonday = (8 - now.getUTCDay()) % 7; // If today is Monday, wait for next Monday
-    const nextMonday = new Date(now);
-    nextMonday.setUTCDate(now.getUTCDate() + daysUntilMonday);
-    nextMonday.setUTCHours(9, 0, 0, 0);
-
-    res.json({ 
-      message: "Successfully registered for weekly reviews",
-      nextEmailDate: nextMonday.toISOString(),
-      recipient: {
-        email: recipientDoc.email,
-        name: recipientDoc.name,
-        style: recipientDoc.style
+        console.log(`Sending email to ${recipient.email} (${recipient.timezone})`);
+        
+        try {
+          await sendEmailAndLog(recipient, emailTemplates[recipient.style || 'elonMusk'], recipient.style || 'elonMusk', 'weeklyCheck');
+          recipient.lastEmailedAt = new Date();
+          await recipient.save();
+          console.log(`Successfully sent email to ${recipient.email}`);
+        } catch (error) {
+          console.error(`Failed to send email to ${recipient.email}:`, error);
+        }
       }
-    });
+    }
   } catch (error) {
-    console.error("Error in registration endpoint:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error('Cron job error:', error);
   }
 });
 
 // Routes
 app.use("/api/recipients", recipientRoutes);
 app.use("/api/logs", emailLogRoutes);
+
+// New registration endpoint
+app.post('/api/register', async (req, res) => {
+  try {
+    const { style, recipient } = req.body;
+    const { email, name, timezone } = recipient;
+
+    // Validate timezone
+    if (!moment.tz.zone(timezone)) {
+      return res.status(400).json({ error: 'Invalid timezone' });
+    }
+
+    // Calculate next Monday at 9 AM in the user's timezone
+    const now = moment().tz(timezone);
+    let nextMonday = moment.tz(timezone);
+    nextMonday.day(1).hour(9).minute(0).second(0).millisecond(0);
+    
+    // If it's already past 9 AM on Monday, schedule for next week
+    if (now.isAfter(nextMonday)) {
+      nextMonday.add(1, 'week');
+    }
+
+    const existingRecipient = await Recipient.findOne({ email });
+    if (existingRecipient) {
+      existingRecipient.name = name;
+      existingRecipient.style = style;
+      existingRecipient.timezone = timezone;
+      existingRecipient.active = true;
+      await existingRecipient.save();
+      return res.json({ 
+        message: 'Updated successfully',
+        nextEmailDate: nextMonday.toISOString()
+      });
+    }
+
+    const newRecipient = new Recipient({
+      email,
+      name,
+      style,
+      timezone,
+      active: true
+    });
+    await newRecipient.save();
+
+    res.json({ 
+      message: 'Registered successfully',
+      nextEmailDate: nextMonday.toISOString()
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Failed to register' });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

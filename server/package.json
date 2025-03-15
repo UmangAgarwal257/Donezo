@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "moment-timezone": "^0.5.47",
     "mongoose": "^7.0.3",
     "node-cron": "^3.0.2",
     "resend": "^1.0.0"

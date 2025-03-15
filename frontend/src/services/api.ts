@@ -42,6 +42,23 @@ export interface TestEmailResponse {
   nextEmailDate: string;
 }
 
+export interface RegistrationResponse {
+  success: boolean;
+  message: string;
+  nextEmailDate: string;
+  style: 'elonMusk' | 'steveJobs';
+  recipient: Recipient;
+}
+
+export interface RegisterRequest {
+  style: 'elonMusk' | 'steveJobs';
+  recipient: {
+    email: string;
+    name: string;
+    timezone: string;
+  };
+}
+
 export interface SendEmailOptions {
   style?: 'elonMusk' | 'steveJobs';
   type?: 'weeklyCheck' | 'reminder';
@@ -65,6 +82,10 @@ export const emailLogApi = {
     const response = await axios.post<TestEmailResponse>('/api/test/send-email', options);
     return response.data;
   },
+  register: async (data: RegisterRequest) => {
+    const response = await api.post<RegistrationResponse>('/register', data);
+    return response.data;
+  }
 };
 
-export default api; 
+export default api;

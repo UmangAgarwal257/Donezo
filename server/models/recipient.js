@@ -12,6 +12,16 @@ const recipientSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  style: {
+    type: String,
+    enum: ['elonMusk', 'steveJobs'],
+    default: 'elonMusk'
+  },
+  timezone: {
+    type: String,
+    required: true,
+    default: 'UTC'
+  },
   active: {
     type: Boolean,
     default: true,
@@ -22,7 +32,10 @@ const recipientSchema = new mongoose.Schema({
   },
   lastEmailedAt: {
     type: Date,
+    default: null,
   },
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model("Recipient", recipientSchema);
