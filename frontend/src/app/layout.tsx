@@ -20,7 +20,7 @@ export default function RootLayout({
         <Toaster position="top-center" />
         <Script
             defer
-            data-domain="https://donezo-theta.vercel.app/" // Replace with your domain
+            data-domain="donezo-theta.vercel.app" // Replace with your domain
             src="https://analytics-code.vercel.app/tracking-script.js"
           />
         {children}
