@@ -1,5 +1,6 @@
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, Github } from "lucide-react";
 import React from "react";
+import Link from "next/link";
 
 interface NavbarProps {
   onBack?: () => void;
@@ -23,8 +24,19 @@ const Navbar = ({ onBack, showBackButton }: NavbarProps) => {
             <span>Back</span>
           </button>
         )}
-        <span className="bg-clip-text bg-gradient-to-br from-white via-30% via-white to-white/30 font-bold text-2xl text-center leading-[1.2] md:leading-[1.3] text-transparent">Donezo</span>
+        <Link href="/" className="bg-clip-text bg-gradient-to-br from-white via-30% via-white to-white/30 font-bold text-2xl text-center leading-[1.2] md:leading-[1.3] text-transparent">
+          Donezo
+        </Link>
       </div>
+      <a
+        href="https://github.com/UmangAgarwal257/Donezo"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
+      >
+        <Github size={20} />
+        <span className="hidden md:inline">GitHub</span>
+      </a>
     </header>
   );
 };
