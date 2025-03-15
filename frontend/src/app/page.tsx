@@ -1,18 +1,16 @@
 "use client";
 
-import { Mail, Target, Zap, TrendingUp } from "lucide-react";
+import { Target, Zap, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./_components/navbar";
 import Recipients from "../components/Recipients";
-import { useState } from "react";
-
-// UI Components
-import Image from 'next/image';
+import { useState, useEffect } from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import FeatureCard from "../components/ui/FeatureCard";
 import Section from "../components/ui/Section";
 import SectionTitle from "../components/ui/SectionTitle";
+import { Spotlight } from "../components/ui/Spotlight";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -31,8 +29,14 @@ const stagger = {
 export default function Home() {
   const [showRecipients, setShowRecipients] = useState(false);
 
+  // Add scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleBack = () => {
     setShowRecipients(false);
+    window.scrollTo(0, 0);
   };
 
   const handleGetStarted = () => {
@@ -50,14 +54,8 @@ export default function Home() {
   }
 
   return (
-    <div className="relative flex flex-col w-full overflow-hidden bg-[#0a0a0a]">
-      <Image
-        src="/vector.png"
-        alt="hero"
-        width={800}
-        height={600}
-        className="fixed bottom-[-100px] w-full h-full"
-      />
+    <div className="relative flex flex-col w-full overflow-x-hidden min-h-screen bg-[#0a0a0a]">
+      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <Navbar/>
       
       {/* Hero Section */}
@@ -66,9 +64,10 @@ export default function Home() {
           variants={stagger}
           initial="initial"
           animate="animate"
-          className="min-h-screen flex flex-col justify-center items-center gap-16 w-full relative z-10"
+          className="flex flex-col justify-start items-center w-full relative z-10 min-h-screen pt-32 md:pt-40"
         >
-          <div className="flex flex-col md:justify-center items-center gap-10 w-full overflow-y-hidden px-4 max-w-6xl mx-auto">
+          <div className="relative flex flex-col items-center gap-10 w-full overflow-y-hidden px-4 max-w-6xl mx-auto">
+            
             <motion.h1
               variants={fadeInUp}
               className="bg-clip-text bg-gradient-to-br from-white via-30% via-white to-white/30 mx-2 font-medium text-[40px] text-transparent md:text-[72px] text-center leading-[60px] md:leading-[82px] relative z-10"
@@ -78,53 +77,9 @@ export default function Home() {
             
             <motion.div
               variants={fadeInUp}
-              className="flex justify-center items-center gap-[24px] md:gap-12 mx-2 px-3 md:px-8 py-6 relative z-10 w-full max-w-3xl"
-            >
-              {/* Animated border background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-500/5 to-transparent backdrop-blur-sm border-t border-b border-blue-500/20" />
-              
-              {/* Content */}
-              <div className="relative flex justify-between items-center w-full text-neutral-300">
-                <div className="flex-1 text-center relative">
-                  <span className="font-medium">Monday Motivation</span>
-                  <motion.span 
-                    className="absolute top-1/2 right-0 w-px h-12 bg-gradient-to-b from-blue-500/50 via-blue-500/20 to-transparent"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 48 }}
-                    transition={{ duration: 1 }}
-                  />
-                </div>
-
-                <div className="flex-1 relative">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <Mail size={14} className="text-blue-400" />
-                        <span className="text-sm">Weekly</span>
-                      </div>
-                      <span className="font-medium text-sm">Progress</span>
-                    </div>
-                    <span className="text-center text-sm">Tech Leader Style</span>
-                  </div>
-                  <motion.span 
-                    className="absolute top-1/2 right-0 w-px h-12 bg-gradient-to-b from-blue-500/50 via-blue-500/20 to-transparent"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 48 }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                  />
-                </div>
-
-                <div className="flex-1 text-center">
-                  <span className="font-medium">Goal Tracking</span>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              variants={fadeInUp}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="mx-auto flex w-full max-w-md items-center justify-center relative z-20"
+              className="mx-auto flex w-full max-w-md items-center justify-center relative z-20 mt-4"
             >
               <Button onClick={handleGetStarted} icon="arrow" fullWidth>
                 Start Your Journey
