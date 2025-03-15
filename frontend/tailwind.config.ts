@@ -131,7 +131,7 @@ function addVariablesForColors({ addBase, theme }: { addBase: PluginAPI['addBase
 
   // Convert newVars to the expected RecursiveKeyValuePair format
   addBase({
-    ":root": { ...newVars } as any
+    ":root": { ...newVars } as Record<`--${string}`, string>
   });
 }
 
