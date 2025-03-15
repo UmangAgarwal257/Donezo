@@ -6,7 +6,7 @@ A modern web application that sends personalized weekly review emails in the sty
 
 - **Stylized Email Templates**
   - Elon Musk style - Direct and results-focused
-  - Steve Jobs style - Visionary and product-focused
+  - Steve Jobs style - Visionary and product-focused 
   - Weekly check-ins and reminders
 
 ## 🛠️ Tech Stack
