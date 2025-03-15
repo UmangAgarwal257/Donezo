@@ -11,6 +11,7 @@ import FeatureCard from "../components/ui/FeatureCard";
 import Section from "../components/ui/Section";
 import SectionTitle from "../components/ui/SectionTitle";
 import { Spotlight } from "../components/ui/Spotlight";
+import { AceternityGrid } from "../components/ui/aceternity-grid";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -54,7 +55,8 @@ export default function Home() {
   }
 
   return (
-    <div className="relative flex flex-col w-full overflow-x-hidden min-h-screen bg-[#0a0a0a]">
+    <div className="relative flex flex-col w-full overflow-x-hidden min-h-screen">
+      <AceternityGrid />
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <Navbar/>
       
@@ -81,14 +83,14 @@ export default function Home() {
               whileTap={{ scale: 0.98 }}
               className="mx-auto flex w-full max-w-md items-center justify-center relative z-20 mt-4"
             >
-              <Button onClick={handleGetStarted} icon="arrow" fullWidth>
+              <Button onClick={handleGetStarted} withMovingBorder className="bg-[#1a1a1a]" icon="arrow" fullWidth>
                 Start Your Journey
               </Button>
             </motion.div>
             
             <motion.p
               variants={fadeInUp}
-              className="text-neutral-400 text-sm text-center max-w-md mx-auto"
+              className="text-neutral-400 text-lg text-center max-w-md mx-auto"
             >
               Get weekly accountability emails inspired by tech visionaries to keep you focused and motivated
             </motion.p>
@@ -141,45 +143,27 @@ export default function Home() {
       </Section>
       
       {/* CTA Section */}
-      <Section className="min-h-screen flex flex-col justify-center items-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <Card withGlow className="p-8 md:p-12 text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-2xl md:text-3xl font-bold mb-4 text-white"
-            >
+      <Section className="relative z-10">
+        <div className="max-w-[600px] mx-auto">
+          <Card className="bg-[#0B1120] p-8 md:p-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
               Make Every Monday Count
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="text-neutral-300 mb-8 max-w-2xl mx-auto"
-            >
+            </h2>
+            <p className="text-neutral-300 mb-8 mx-auto text-lg">
               Join ambitious professionals who use our weekly check-ins to stay accountable and achieve their goals faster.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="flex justify-center"
-            >
-              <Button onClick={handleGetStarted} icon="send">
+            </p>
+            <div className="flex justify-center">
+              <Button 
+                onClick={handleGetStarted} 
+                withMovingBorder 
+                icon="send"
+                className="bg-[#1a1a1a] w-full text-white"
+              >
                 Begin Your Journey
               </Button>
-            </motion.div>
+            </div>
           </Card>
-        </motion.div>
+        </div>
       </Section>
       
       {/* Footer */}
@@ -187,7 +171,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="relative z-10 py-8 border-t border-blue-500/20 backdrop-blur-sm bg-[#0a0a0a]/30"
+        className="relative z-10 py-8 border-t border-blue-500/20"
       >
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-neutral-500 text-sm">

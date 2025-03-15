@@ -1,7 +1,5 @@
 "use client";
-
-import React from 'react';
-import { ArrowRight, Send } from 'lucide-react';
+import React from "react";
 import {
   motion,
   useAnimationFrame,
@@ -12,41 +10,32 @@ import {
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps {
-  onClick?: () => void;
-  children: React.ReactNode;
-  icon?: 'arrow' | 'send' | null;
-  className?: string;
-  type?: 'button' | 'submit' | 'reset';
-  fullWidth?: boolean;
+type ButtonProps = {
   borderRadius?: string;
+  children: React.ReactNode;
   as?: React.ElementType;
   containerClassName?: string;
   borderClassName?: string;
   duration?: number;
+  className?: string;
   [key: string]: unknown;
-}
+};
 
-const Button = ({ 
-  onClick, 
-  children, 
-  icon = null, 
-  className = '', 
-  fullWidth = false,
+export function Button({
   borderRadius = "1.75rem",
+  children,
   as: Component = "button",
   containerClassName,
   borderClassName,
   duration,
+  className,
   ...otherProps
-}: ButtonProps) => {
+}: ButtonProps) {
   return (
     <Component
-      onClick={onClick}
       className={cn(
-        "bg-transparent relative text-xl h-16 w-40 p-[1px] overflow-hidden",
-        containerClassName,
-        fullWidth ? 'w-full' : ''
+        "bg-transparent relative text-xl  h-16 w-40 p-[1px] overflow-hidden ",
+        containerClassName
       )}
       style={{
         borderRadius: borderRadius,
@@ -77,12 +66,10 @@ const Button = ({
         }}
       >
         {children}
-        {icon === 'arrow' && <ArrowRight size={16} />}
-        {icon === 'send' && <Send size={16} />}
       </div>
     </Component>
   );
-};
+}
 
 type MovingBorderProps = {
   children: React.ReactNode;
@@ -154,6 +141,3 @@ export const MovingBorder = ({
     </>
   );
 };
-
-export { Button };
-export default Button;

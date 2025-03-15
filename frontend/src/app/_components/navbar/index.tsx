@@ -13,7 +13,7 @@ const Navbar = ({ onBack, showBackButton }: NavbarProps) => {
         {showBackButton && (
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-3 py-1 rounded-md"
+            className="flex items-center text-white gap-2 px-3 py-1 rounded-md"
             style={{
               background:
                 "linear-gradient(180deg, #222223 0%, rgba(34, 34, 35, 0.6) 68.75%)",
