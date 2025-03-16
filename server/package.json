@@ -19,7 +19,8 @@
     "moment-timezone": "^0.5.47",
     "mongoose": "^7.0.3",
     "node-cron": "^3.0.2",
-    "resend": "^1.0.0"
+    "resend": "^1.0.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
