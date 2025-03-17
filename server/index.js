@@ -84,34 +84,6 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
-// Manual trigger endpoint for testing
-app.post('/api/trigger-emails', async (req, res) => {
-  try {
-    const recipients = await Recipient.find({ active: true });
-    console.log(`Manually triggering emails for ${recipients.length} recipients`);
-    
-    const results = [];
-    for (const recipient of recipients) {
-      try {
-        const result = await sendEmailAndLog(
-          recipient, 
-          emailTemplates[recipient.style || 'elonMusk'], 
-          recipient.style || 'elonMusk', 
-          'weeklyCheck'
-        );
-        results.push({ email: recipient.email, success: true, ...result });
-      } catch (error) {
-        results.push({ email: recipient.email, success: false, error: error.message });
-      }
-    }
-    
-    res.json({ message: 'Email trigger complete', results });
-  } catch (error) {
-    console.error('Manual trigger error:', error);
-    res.status(500).json({ error: 'Failed to trigger emails' });
-  }
-});
-
 // New registration endpoint
 app.post('/api/register', async (req, res) => {
   try {
