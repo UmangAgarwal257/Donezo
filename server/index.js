@@ -163,6 +163,43 @@ app.get('/api/system-status', async (req, res) => {
   }
 });
 
+// Temporary endpoint for today's delayed emails
+app.post('/api/send-delayed-emails', async (req, res) => {
+  try {
+    const recipients = await Recipient.find({ 
+      active: true,
+      lastEmailedAt: null, // Only those who haven't received email
+      timezone: "Asia/Calcutta" // Specifically for Indian users
+    });
+
+    console.log(`Found ${recipients.length} recipients for delayed emails`);
+    
+    const results = [];
+    for (const recipient of recipients) {
+      try {
+        const result = await sendEmailAndLog(
+          recipient, 
+          emailTemplates[recipient.style || 'elonMusk'], 
+          recipient.style || 'elonMusk', 
+          'weeklyCheck'
+        );
+        results.push({ email: recipient.email, success: true, ...result });
+      } catch (error) {
+        results.push({ email: recipient.email, success: false, error: error.message });
+      }
+    }
+    
+    res.json({ 
+      message: 'Delayed emails sent',
+      count: results.length,
+      results 
+    });
+  } catch (error) {
+    console.error('Delayed email error:', error);
+    res.status(500).json({ error: 'Failed to send delayed emails' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
