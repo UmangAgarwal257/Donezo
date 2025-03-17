@@ -82,17 +82,32 @@ async function runEmailJob() {
       const recipientTime = moment().tz(recipient.timezone);
       const lastEmailedAt = recipient.lastEmailedAt ? moment(recipient.lastEmailedAt) : moment(0);
       
-      // Check if it's Monday in recipient's timezone
+      // Detailed logging for debugging
+      console.log(`\nChecking recipient: ${recipient.email}`);
+      console.log(`Timezone: ${recipient.timezone}`);
+      console.log(`Local time: ${recipientTime.format('dddd HH:mm')}`);
+      console.log(`Last emailed: ${lastEmailedAt.format('YYYY-MM-DD HH:mm')}`);
+      
+      // Check if it's Monday
       const isMonday = recipientTime.day() === 1;
       
-      // Check if it's between 9:00 AM and 9:59 AM in recipient's timezone
+      // Check if it's 9 AM
       const isNineAM = recipientTime.hours() === 9;
       
-      // Check if we haven't sent an email in the last 24 hours
-      const noRecentEmail = recipientTime.diff(lastEmailedAt, 'hours') >= 24;
+      // Check if we haven't sent an email this week
+      // Calculate the start of this week's Monday
+      const thisWeekMonday = moment().tz(recipient.timezone)
+        .startOf('week').add(1, 'day')
+        .hour(9).minute(0).second(0);
+      
+      const noEmailThisWeek = !lastEmailedAt || lastEmailedAt.isBefore(thisWeekMonday);
 
-      if (isMonday && isNineAM && noRecentEmail) {
-        console.log(`Sending email to ${recipient.email} (${recipient.timezone})`);
+      console.log(`Is Monday? ${isMonday}`);
+      console.log(`Is 9 AM? ${isNineAM}`);
+      console.log(`No email this week? ${noEmailThisWeek}`);
+
+      if (isMonday && isNineAM && noEmailThisWeek) {
+        console.log(`✉️ Sending email to ${recipient.email}`);
         
         try {
           await sendEmailAndLog(
@@ -106,7 +121,7 @@ async function runEmailJob() {
           console.error(`Failed to send email to ${recipient.email}:`, error);
         }
       } else {
-        console.log(`Skipping ${recipient.email} - Not the right time (${recipient.timezone}: ${recipientTime.format('dddd HH:mm')})`);
+        console.log(`⏭️ Skipping ${recipient.email} - Next email scheduled for next Monday 9 AM`);
       }
     }
   } catch (error) {

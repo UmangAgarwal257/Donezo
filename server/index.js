@@ -104,11 +104,15 @@ app.post('/api/register', async (req, res) => {
 
     // Calculate next Monday at 9 AM in the user's timezone
     const now = moment().tz(timezone);
-    let nextMonday = moment.tz(timezone);
+    let nextMonday = moment().tz(timezone);
     nextMonday.day(1).hour(9).minute(0).second(0).millisecond(0);
     
-    // If it's already past 9 AM on Monday, schedule for next week
-    if (now.isAfter(nextMonday)) {
+    // If today is Monday and it's past 9 AM, or if it's after Monday,
+    // move to next week
+    if (
+      (now.day() === 1 && now.hour() >= 9) ||
+      now.day() > 1
+    ) {
       nextMonday.add(1, 'week');
     }
 
@@ -147,15 +151,30 @@ app.post('/api/register', async (req, res) => {
 app.get('/api/system-status', async (req, res) => {
   try {
     const recipients = await Recipient.find({ active: true });
-    const status = recipients.map(r => ({
-      email: r.email,
-      timezone: r.timezone,
-      localTime: moment().tz(r.timezone).format('dddd HH:mm'),
-      nextEmail: moment().tz(r.timezone)
-        .day(1).hour(9).minute(0)
-        .format('YYYY-MM-DD HH:mm z'),
-      lastEmailedAt: r.lastEmailedAt
-    }));
+    const status = recipients.map(r => {
+      const recipientTime = moment().tz(r.timezone);
+      
+      // Calculate next Monday 9 AM
+      let nextMonday = moment().tz(r.timezone);
+      nextMonday.day(1).hour(9).minute(0).second(0).millisecond(0);
+      
+      // If today is Monday and it's past 9 AM, or if it's after Monday,
+      // move to next week
+      if (
+        (recipientTime.day() === 1 && recipientTime.hour() >= 9) ||
+        recipientTime.day() > 1
+      ) {
+        nextMonday.add(1, 'week');
+      }
+
+      return {
+        email: r.email,
+        timezone: r.timezone,
+        localTime: recipientTime.format('dddd HH:mm'),
+        nextEmail: nextMonday.format('YYYY-MM-DD HH:mm z'),
+        lastEmailedAt: r.lastEmailedAt
+      };
+    });
     
     res.json(status);
   } catch (error) {
