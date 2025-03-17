@@ -144,6 +144,25 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+app.get('/api/system-status', async (req, res) => {
+  try {
+    const recipients = await Recipient.find({ active: true });
+    const status = recipients.map(r => ({
+      email: r.email,
+      timezone: r.timezone,
+      localTime: moment().tz(r.timezone).format('dddd HH:mm'),
+      nextEmail: moment().tz(r.timezone)
+        .day(1).hour(9).minute(0)
+        .format('YYYY-MM-DD HH:mm z'),
+      lastEmailedAt: r.lastEmailedAt
+    }));
+    
+    res.json(status);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
