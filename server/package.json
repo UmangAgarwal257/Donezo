@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm install"
+    "build": "npm install",
+    "cron": "node jobs/emailCron.js"
   },
   "keywords": [],
   "author": "",
