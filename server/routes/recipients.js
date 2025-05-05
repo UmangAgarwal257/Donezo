@@ -27,6 +27,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Opt-out by email
+router.post("/opt-out", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email required" });
+
+  try {
+    const recipient = await Recipient.findOne({ email });
+    if (!recipient)
+      return res.status(404).json({ message: "Recipient not found" });
+    recipient.active = false;
+    await recipient.save();
+    res.json({ message: "You have been unsubscribed." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Update recipient
 router.patch("/:id", async (req, res) => {
   try {

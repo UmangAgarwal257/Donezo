@@ -72,6 +72,7 @@ export const recipientApi = {
   getAll: () => api.get<Recipient[]>('/recipients'),
   create: (data: { email: string; name: string }) => api.post<Recipient>('/recipients', data),
   update: (id: string, data: Partial<Recipient>) => api.patch<Recipient>(`/recipients/${id}`, data),
+  optOut: (email: string) => api.post<{ message: string }>('/recipients/opt-out', { email }),
   delete: (id: string) => api.delete(`/recipients/${id}`),
 };
 
